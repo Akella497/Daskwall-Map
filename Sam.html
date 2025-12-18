@@ -1,112 +1,91 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Самоцветы</title>
+<meta charset="UTF-8">
+<title>Самоцветы</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      height: 100vh;
-      background: #f0f4f7;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f4f7;
+}
 
-    .map-container {
-      position: relative;
-      display: flex;
-      padding: 20px;
-    }
+.map-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 
-    svg {
-      width: 800px;
-      height: auto;
-      border: 2px solid #333;
-      border-radius: 8px;
-    }
+svg {
+  width: 800px;
+  height: auto;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
 
-    /* интерактивные области */
-    .hover-area {
-      fill: transparent;
-      cursor: pointer;
-      transition: fill 0.2s;
-    }
+.hover-area {
+  fill: transparent;
+  cursor: pointer;
+}
 
-    .hover-area:hover {
-      fill: rgba(255, 0, 0, 0.25);
-    }
+.hover-area:hover {
+  fill: rgba(255, 0, 0, 0.25);
+}
 
-    /* окно с текстом */
-    .tooltip {
-      margin-left: 20px;
-      width: 260px;
-      padding: 12px;
-      background: rgba(50, 50, 50, 0.9);
-      color: #fff;
-      border-radius: 8px;
-      font-size: 16px;
-      opacity: 0;
-      transition: opacity 0.2s;
-      pointer-events: none;
-    }
-  </style>
+.tooltip {
+  margin-left: 20px;
+  width: 260px;
+  padding: 12px;
+  background: rgba(50, 50, 50, 0.9);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="map-container">
+<div class="map-container">
 
-    <svg viewBox="0 0 800 600">
-      <!-- карта -->
-      <image
-        href="https://cdn.imgpile.com/f/gBOn9mV_xl.jpg"
-        width="800"
-        height="600"
-      />
+<svg viewBox="0 0 800 600">
+  <image href="https://cdn.imgpile.com/f/gBOn9mV_xl.jpg" width="800" height="600" />
 
-      <!-- интерактивные зоны -->
-      <polygon
-        class="hover-area"
-        data-tooltip="Это центральная площадь района."
-        points="400,100 450,150 400,200 350,150"
-      />
+  <polygon class="hover-area"
+    data-tooltip="Это центральная площадь района."
+    points="400,100 450,150 400,200 350,150" />
 
-      <polygon
-        class="hover-area"
-        data-tooltip="Здесь находится старый рынок."
-        points="200,300 250,350 200,400 150,350"
-      />
+  <polygon class="hover-area"
+    data-tooltip="Здесь находится старый рынок."
+    points="200,300 250,350 200,400 150,350" />
 
-      <polygon
-        class="hover-area"
-        data-tooltip="Жилой квартал Белая улица."
-        points="600,400 650,450 600,500 550,450"
-      />
-    </svg>
+  <polygon class="hover-area"
+    data-tooltip="Жилой квартал Белая улица."
+    points="600,400 650,450 600,500 550,450" />
+</svg>
 
-    <!-- окно с текстом -->
-    <div class="tooltip" id="tooltip"></div>
+<div class="tooltip" id="tooltip"></div>
 
-  </div>
+</div>
 
-  <script>
-    const tooltip = document.getElementById('tooltip');
-    const areas = document.querySelectorAll('.hover-area');
+<script>
+const tooltip = document.getElementById('tooltip');
 
-    areas.forEach(area => {
-      area.addEventListener('mouseenter', () => {
-        tooltip.textContent = area.dataset.tooltip;
-        tooltip.style.opacity = '1';
-      });
+document.querySelectorAll('.hover-area').forEach(area => {
+  area.addEventListener('mouseenter', () => {
+    tooltip.textContent = area.dataset.tooltip;
+    tooltip.style.opacity = '1';
+  });
 
-      area.addEventListener('mouseleave', () => {
-        tooltip.style.opacity = '0';
-      });
-    });
-  </script>
+  area.addEventListener('mouseleave', () => {
+    tooltip.style.opacity = '0';
+  });
+});
+</script>
 
 </body>
 </html>

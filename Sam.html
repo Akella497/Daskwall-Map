@@ -5,23 +5,24 @@
 <title>Самоцветы</title>
 
 <style>
-body {
+html, body {
   margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   font-family: Arial, sans-serif;
-  background: #f0f4f7;
+  background: #000;
 }
 
 .map-container {
   display: flex;
-  justify-content: center;
-  padding: 20px;
+  width: 100vw;
+  height: 100vh;
 }
 
 svg {
-  width: 800px;
-  height: auto;
-  border: 2px solid #333;
-  border-radius: 8px;
+  width: 100vw;
+  height: 100vh;
 }
 
 .hover-area {
@@ -34,7 +35,9 @@ svg {
 }
 
 .tooltip {
-  margin-left: 20px;
+  position: fixed;
+  right: 20px;
+  top: 20px;
   width: 260px;
   padding: 12px;
   background: rgba(50, 50, 50, 0.9);
@@ -52,8 +55,8 @@ svg {
 
 <div class="map-container">
 
-<svg viewBox="0 0 800 600">
-  <image href="https://cdn.imgpile.com/f/gBOn9mV_xl.jpg" width="800" height="600" />
+<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+  <image href="artwork.jpg" width="800" height="600" />
 
   <polygon class="hover-area"
     data-tooltip="Это центральная площадь района."

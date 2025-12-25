@@ -1,62 +1,161 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Каталог</title>
-  <style>
-    /* Сброс стандартных стилей */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<title>Каталог — Клинки во Тьме</title>
 
-    /* Фон страницы */
-    body {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #f0f4f7, #d9e2ec);
-    }
+<style>
+/* ===================== ОСНОВА ===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    /* Контейнер для кнопок */
-    .button-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px; /* Расстояние между кнопками */
-    }
+html, body {
+  height: 100%;
+}
 
-    /* Стили кнопок */
-    .catalog-button {
-      padding: 20px 40px;
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      color: #fff;
-      background: linear-gradient(45deg, #6a11cb, #2575fc);
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-decoration: none; /* Для ссылок */
-      display: inline-block;
-    }
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at top, #1a2228 0%, #0b0f13 60%, #050608 100%);
+  color: #d4d6d8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
 
-    .catalog-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-  </style>
+/* ===================== ТУМАН ===================== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      120deg,
+      rgba(255,255,255,0.02) 0,
+      rgba(255,255,255,0.02) 1px,
+      transparent 2px,
+      transparent 6px
+    );
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* ===================== КОНТЕЙНЕР ===================== */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 50px 60px;
+  background:
+    linear-gradient(180deg, rgba(30,38,45,0.85), rgba(12,16,20,0.9));
+  border: 1px solid rgba(180,150,90,0.25);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.7),
+    0 30px 80px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+/* Латунная кромка */
+.button-container::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed rgba(180,150,90,0.25);
+  pointer-events: none;
+}
+
+/* ===================== КНОПКИ ===================== */
+.catalog-button {
+  position: relative;
+  padding: 22px 48px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #e8e4d8;
+
+  background:
+    linear-gradient(
+      145deg,
+      #2b343c,
+      #141a1f
+    );
+
+  border: 1px solid rgba(180,150,90,0.4);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.7),
+    0 12px 30px rgba(0,0,0,0.7);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease;
+}
+
+/* Призрачная линия */
+.catalog-button::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 6px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(160,220,255,0.6),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+/* ===================== HOVER ===================== */
+.catalog-button:hover {
+  transform: translateY(-3px);
+  color: #ffffff;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.8),
+    0 18px 45px rgba(0,0,0,0.9),
+    0 0 20px rgba(120,180,220,0.25);
+}
+
+.catalog-button:hover::after {
+  opacity: 1;
+}
+
+/* ===================== АКЦЕНТЫ ПО ЛОКАЦИЯМ ===================== */
+.catalog-button:nth-child(1):hover {
+  box-shadow:
+    0 0 25px rgba(80,200,140,0.25),
+    0 18px 45px rgba(0,0,0,0.9);
+}
+
+.catalog-button:nth-child(2):hover {
+  box-shadow:
+    0 0 25px rgba(160,160,160,0.25),
+    0 18px 45px rgba(0,0,0,0.9);
+}
+
+.catalog-button:nth-child(3):hover {
+  box-shadow:
+    0 0 30px rgba(220,180,90,0.35),
+    0 18px 45px rgba(0,0,0,0.9);
+}
+</style>
 </head>
+
 <body>
 
-  <div class="button-container">
-    <a href="Sam.html" class="catalog-button" target="_blank">Самоцветы</a>
-    <a href="SG.html" class="catalog-button" target="_blank">Старый город</a>
-    <a href="WK.html" class="catalog-button" target="_blank">Белая корона</a>
-  </div>
+<div class="button-container">
+  <a href="Sam.html" class="catalog-button" target="_blank">Самоцветы</a>
+  <a href="SG.html" class="catalog-button" target="_blank">Старый город</a>
+  <a href="WK.html" class="catalog-button" target="_blank">Белая корона</a>
+</div>
 
 </body>
 </html>

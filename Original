@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Самоцветы</title>
+<link rel="icon" type="image/png" href="https://i.postimg.cc/XJSk855s/123.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+</title>
+
+<style>
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  cursor: grab;
+}
+
+/* КОНТЕЙНЕР КАРТЫ + ТОЧЕК */
+#map-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+}
+
+/* КАРТА */
+#map {
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ТОЧКИ */
+.marker {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: #004eff7a;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(202, 169, 106, 0.8);
+    cursor: help;
+}
+
+/* TOOLTIP */
+.marker .tooltip {
+  position: absolute;
+  left: 22px;  /* справа от точки */
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 220px;
+  padding: 10px 14px;
+  background: rgba(15,18,20,0.95);
+  border: 1px solid rgba(202,169,106,0.5);
+  color: #e8e4d8;
+  font-size: 14px;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  font-size: 16pt;
+  font-family: 'Merriweather';
+}
+
+.marker:hover .tooltip {
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+
+<div id="viewport">
+
+  <div id="map-wrapper">
+    <img
+      id="map"
+      src="https://cdn.imgpile.com/f/czYW80F_xl.jpg"
+      draggable="false"
+    >
+
+    <!-- ТОЧКИ -->
+    <div class="marker" style="left:35%; top:42%;">
+      <div class="tooltip">Эпицентр тоговли<br>Любимое место каждого!</div>
+    </div>
+    <div class="marker" style="left:58%; top:61%;">
+      <div class="tooltip">Заброшенная башня<br>Очаг духовной активности</div>
+    </div>
+     <div class="marker" style="left:55.5%; top:40%;">
+      <div class="tooltip">Дом Рокстара<br>Он тут спи и кушает</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const viewport = document.getElementById("viewport");
+const wrapper = document.getElementById("map-wrapper");
+const map = document.getElementById("map");
+
+let isDragging = false;
+let startX = 0, startY = 0;
+let translateX = 0, translateY = 0;
+let scale = 1;
+
+function clamp(v, min, max) {
+  return Math.min(Math.max(v, min), max);
+}
+
+function updateTransform() {
+  wrapper.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+}
+
+map.onload = () => {
+  const vw = viewport.clientWidth;
+  const vh = viewport.clientHeight;
+  const iw = map.naturalWidth;
+  const ih = map.naturalHeight;
+
+  // масштаб, чтобы карта закрывала экран
+  scale = Math.max(vw / iw, vh / ih);
+
+  const w = iw * scale;
+  const h = ih * scale;
+
+  // центрируем карту
+  translateX = (vw - w)/2;
+  translateY = (vh - h)/2;
+
+  updateTransform();
+};
+
+viewport.addEventListener("mousedown", e => {
+  isDragging = true;
+  viewport.style.cursor = "grabbing";
+  startX = e.clientX;
+  startY = e.clientY;
+});
+
+window.addEventListener("mouseup", () => {
+  isDragging = false;
+  viewport.style.cursor = "grab";
+});
+
+window.addEventListener("mousemove", e => {
+  if(!isDragging) return;
+
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
+
+  startX = e.clientX;
+  startY = e.clientY;
+
+  const vw = viewport.clientWidth;
+  const vh = viewport.clientHeight;
+  const mw = map.naturalWidth * scale;
+  const mh = map.naturalHeight * scale;
+
+  translateX = clamp(translateX + dx, vw - mw, 0);
+  translateY = clamp(translateY + dy, vh - mh, 0);
+
+  updateTransform();
+});
+</script>
+
+</body>
+</html>

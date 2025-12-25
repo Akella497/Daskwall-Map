@@ -21,24 +21,22 @@ html, body {
   cursor: grab;
 }
 
-/* ===== КАРТА ===== */
-#map {
+/* === ОБЩИЙ КОНТЕЙНЕР КАРТЫ + ТОЧЕК === */
+#map-wrapper {
   position: absolute;
   top: 0;
   left: 0;
-  user-select: none;
-  pointer-events: none;
   transform-origin: top left;
 }
 
-/* ===== СЛОЙ ТОЧЕК (НЕ ДВИГАЕТСЯ) ===== */
-#markers {
-  position: absolute;
-  inset: 0;
+/* === КАРТА === */
+#map {
+  display: block;
+  user-select: none;
   pointer-events: none;
 }
 
-/* ===== ТОЧКА ===== */
+/* === ТОЧКИ === */
 .marker {
   position: absolute;
   width: 14px;
@@ -47,16 +45,15 @@ html, body {
   border-radius: 50%;
   box-shadow: 0 0 12px rgba(202,169,106,0.8);
   pointer-events: auto;
-  cursor: help;
 }
 
-/* ===== ВСПЛЫВАЮЩЕЕ ОКНО ===== */
+/* === TOOLTIP === */
 .marker .tooltip {
   position: absolute;
-  left: 22px;          /* СПРАВА ОТ ТОЧКИ */
+  left: 22px;               /* СПРАВА */
   top: 50%;
   transform: translateY(-50%);
-  min-width: 200px;
+  min-width: 220px;
 
   padding: 10px 14px;
   background: rgba(15,18,20,0.95);
@@ -68,10 +65,8 @@ html, body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
-  white-space: normal;
 }
 
-/* Показ по наведению */
 .marker:hover .tooltip {
   opacity: 1;
 }
@@ -82,34 +77,36 @@ html, body {
 
 <div id="viewport">
 
-  <!-- КАРТА -->
-  <img
-    id="map"
-    src="https://cdn.imgpile.com/f/czYW80F_xl.jpg"
-    draggable="false"
-  >
+  <div id="map-wrapper">
 
-  <!-- ТОЧКИ -->
-  <div id="markers">
-    <div class="marker" style="left: 35%; top: 42%;">
+    <img
+      id="map"
+      src="https://cdn.imgpile.com/f/czYW80F_xl.jpg"
+      draggable="false"
+    >
+
+    <!-- ТОЧКИ ПРИКЛЕЕНЫ К КАРТЕ -->
+    <div class="marker" style="left:35%; top:42%;">
       <div class="tooltip">
         Самоцветы<br>
-        Район контрабандистов и арканистов.
+        Район алхимиков и контрабандистов.
       </div>
     </div>
 
-    <div class="marker" style="left: 58%; top: 61%;">
+    <div class="marker" style="left:58%; top:61%;">
       <div class="tooltip">
         Заброшенная башня<br>
-        Источник духовной активности.
+        Очаг духовной активности.
       </div>
     </div>
+
   </div>
 
 </div>
 
 <script>
 const viewport = document.getElementById("viewport");
+const wrapper = document.getElementById("map-wrapper");
 const map = document.getElementById("map");
 
 let isDragging = false;
@@ -122,7 +119,8 @@ function clamp(v, min, max) {
 }
 
 function updateTransform() {
-  map.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+  wrapper.style.transform =
+    `translate(${translateX}px, ${translateY}px) scale(${scale})`;
 }
 
 map.onload = () => {
@@ -132,6 +130,7 @@ map.onload = () => {
   const iw = map.naturalWidth;
   const ih = map.naturalHeight;
 
+  // Масштаб: карта минимум закрывает экран
   scale = Math.max(vw / iw, vh / ih);
 
   const w = iw * scale;

@@ -21,22 +21,28 @@ html, body {
   cursor: grab;
 }
 
-/* === ОБЩИЙ КОНТЕЙНЕР КАРТЫ + ТОЧЕК === */
-#map-wrapper {
+/* ===== СЛОЙ КАРТЫ (ДВИГАЕТСЯ) ===== */
+#map-layer {
   position: absolute;
   top: 0;
   left: 0;
   transform-origin: top left;
 }
 
-/* === КАРТА === */
 #map {
   display: block;
   user-select: none;
   pointer-events: none;
 }
 
-/* === ТОЧКИ === */
+/* ===== UI-СЛОЙ (СТАТИЧЕН) ===== */
+#ui-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ===== ТОЧКА ===== */
 .marker {
   position: absolute;
   width: 14px;
@@ -45,12 +51,13 @@ html, body {
   border-radius: 50%;
   box-shadow: 0 0 12px rgba(202,169,106,0.8);
   pointer-events: auto;
+  cursor: help;
 }
 
-/* === TOOLTIP === */
+/* ===== TOOLTIP ===== */
 .marker .tooltip {
   position: absolute;
-  left: 22px;               /* СПРАВА */
+  left: 22px;          /* СПРАВА ОТ ТОЧКИ */
   top: 50%;
   transform: translateY(-50%);
   min-width: 220px;
@@ -77,36 +84,37 @@ html, body {
 
 <div id="viewport">
 
-  <div id="map-wrapper">
-
+  <!-- ДВИГАЕМАЯ КАРТА -->
+  <div id="map-layer">
     <img
       id="map"
       src="https://cdn.imgpile.com/f/czYW80F_xl.jpg"
       draggable="false"
     >
+  </div>
 
-    <!-- ТОЧКИ ПРИКЛЕЕНЫ К КАРТЕ -->
-    <div class="marker" style="left:35%; top:42%;">
+  <!-- СТАТИЧНЫЕ ТОЧКИ -->
+  <div id="ui-layer">
+    <div class="marker" style="left: 40%; top: 45%;">
       <div class="tooltip">
         Самоцветы<br>
-        Район алхимиков и контрабандистов.
+        Район торговли и тёмных сделок.
       </div>
     </div>
 
-    <div class="marker" style="left:58%; top:61%;">
+    <div class="marker" style="left: 62%; top: 60%;">
       <div class="tooltip">
         Заброшенная башня<br>
         Очаг духовной активности.
       </div>
     </div>
-
   </div>
 
 </div>
 
 <script>
 const viewport = document.getElementById("viewport");
-const wrapper = document.getElementById("map-wrapper");
+const mapLayer = document.getElementById("map-layer");
 const map = document.getElementById("map");
 
 let isDragging = false;
@@ -119,7 +127,7 @@ function clamp(v, min, max) {
 }
 
 function updateTransform() {
-  wrapper.style.transform =
+  mapLayer.style.transform =
     `translate(${translateX}px, ${translateY}px) scale(${scale})`;
 }
 
@@ -130,7 +138,6 @@ map.onload = () => {
   const iw = map.naturalWidth;
   const ih = map.naturalHeight;
 
-  // Масштаб: карта минимум закрывает экран
   scale = Math.max(vw / iw, vh / ih);
 
   const w = iw * scale;
